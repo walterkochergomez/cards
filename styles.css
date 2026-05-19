@@ -773,3 +773,66 @@ body::before {
     font-size: 14px;
     padding: 40px 0;
 }
+
+/* ========================================
+   NUEVO: TEMA CLARO Y UTILIDADES
+   ======================================== */
+
+/* Variables del Modo Claro */
+body.light-theme {
+    --bg: #f8fafc;
+    --surface: #ffffff;
+    --surface-2: #f1f5f9;
+    --border: #e2e8f0;
+    --border-hover: #cbd5e1;
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --text-dim: #94a3b8;
+    --accent: #4f46e5;
+    --accent-glow: rgba(79, 70, 229, 0.15);
+    --shadow: 0 8px 32px rgba(0,0,0,0.06);
+}
+
+body.light-theme::before {
+    opacity: 0.02; /* Reduce el ruido de fondo en el modo claro */
+}
+
+/* Solución para el bug del parpadeo de la tarjeta */
+.no-transition {
+    transition: none !important;
+}
+
+/* Estilos de la barra superior y botones extra */
+.home-top-bar {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.icon-btn:hover {
+    border-color: var(--border-hover);
+    color: var(--text);
+}
+
+.icon-btn.danger-btn:hover {
+    color: var(--red);
+    border-color: rgba(239, 68, 68, 0.4);
+    background: rgba(239, 68, 68, 0.05);
+}
