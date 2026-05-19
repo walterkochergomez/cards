@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeutschCards — Aprende alemán</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+
+        <!-- PANTALLA 0: Bienvenida / Inicio -->
+        <div id="home-screen" class="screen">
+            <div class="home-hero">
+                <div class="logo-mark">DE</div>
+                <h1>Deutsch<span>Cards</span></h1>
+                <p class="tagline">Aprende verbos alemanes con repetición espaciada inteligente</p>
+            </div>
+            <div class="stats-row" id="home-stats">
+                <div class="stat-card">
+                    <span class="stat-num" id="stat-total">0</span>
+                    <span class="stat-label">Total verbos</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-num" id="stat-studying">0</span>
+                    <span class="stat-label">Estudiando</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-num" id="stat-due">0</span>
+                    <span class="stat-label">Para hoy</span>
+                </div>
+            </div>
+            <div class="home-actions">
+                <button class="btn-primary" id="go-study-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    Comenzar sesión
+                </button>
+                <button class="btn-secondary" id="go-select-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    Seleccionar verbos
+                </button>
+            </div>
+        </div>
+
+        <!-- PANTALLA 1: Selección de palabras -->
+        <div id="selection-screen" class="screen hidden">
+            <div class="screen-header">
+                <button class="btn-back" id="back-from-selection">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <div class="screen-title-area">
+                    <h2>Seleccionar verbos</h2>
+                    <p class="screen-subtitle"><span id="available-count">0</span> verbos disponibles · <span id="selected-count">0</span> seleccionados</p>
+                </div>
+            </div>
+
+            <div class="search-bar">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="search-input" placeholder="Buscar verbo en español o alemán…">
+            </div>
+
+            <div class="filter-row">
+                <button class="filter-btn active" data-filter="all">Todos</button>
+                <button class="filter-btn" data-filter="new">Nuevos</button>
+                <button class="filter-btn" data-filter="studying">Estudiando</button>
+            </div>
+
+            <div id="word-list" class="word-list"></div>
+
+            <div class="selection-footer">
+                <button class="btn-primary" id="start-with-selection-btn">
+                    Estudiar seleccionados
+                    <span class="badge" id="selection-badge">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- PANTALLA 2: Flashcards -->
+        <div id="study-screen" class="screen hidden">
+            <div class="study-header">
+                <button class="btn-back" id="back-from-study">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <div class="progress-area">
+                    <div class="progress-bar-track">
+                        <div class="progress-bar-fill" id="progress-fill"></div>
+                    </div>
+                    <span class="progress-label"><span id="cards-done">0</span> / <span id="cards-total">0</span></span>
+                </div>
+                <div class="session-type-badge" id="session-badge">Sesión</div>
+            </div>
+
+            <div class="card-hint" id="card-hint">Toca la tarjeta para revelar</div>
+
+            <div class="flashcard-scene" id="flashcard-scene">
+                <div class="flashcard" id="flashcard">
+                    <div class="card-front">
+                        <div class="card-lang-tag">Deutsch</div>
+                        <h2 id="card-german">Verbo</h2>
+                        <div class="card-tap-hint">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+                            toca para revelar
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <div class="card-lang-tag esp">Español</div>
+                        <h2 id="card-spanish">Significado</h2>
+                        <div class="card-grammar">
+                            <div class="grammar-item">
+                                <span class="grammar-label">Perfekt</span>
+                                <span class="grammar-value" id="card-perfekt">—</span>
+                            </div>
+                            <div class="grammar-item">
+                                <span class="grammar-label">Präteritum</span>
+                                <span class="grammar-value" id="card-prateritum">—</span>
+                            </div>
+                        </div>
+                        <div class="card-retap-hint">toca para voltear</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="evaluation-buttons" class="eval-buttons hidden">
+                <button class="btn-eval incorrect" onclick="evaluateCard(false)">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    <span>No la sabía</span>
+                    <small>repetir hoy</small>
+                </button>
+                <button class="btn-eval correct" onclick="evaluateCard(true)">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span>¡La sabía!</span>
+                    <small id="next-interval-label">próximo repaso</small>
+                </button>
+            </div>
+        </div>
+
+        <!-- PANTALLA 3: Sesión terminada -->
+        <div id="done-screen" class="screen hidden">
+            <div class="done-content">
+                <div class="done-icon">🎉</div>
+                <h2>¡Sesión completada!</h2>
+                <p class="done-sub">Buen trabajo. Tu progreso ha sido guardado.</p>
+                <div class="done-stats">
+                    <div class="done-stat">
+                        <span class="done-num" id="done-correct">0</span>
+                        <span class="done-label">Correctas</span>
+                    </div>
+                    <div class="done-stat">
+                        <span class="done-num" id="done-incorrect-count">0</span>
+                        <span class="done-label">A repasar</span>
+                    </div>
+                </div>
+                <button class="btn-primary" id="done-home-btn">Volver al inicio</button>
+            </div>
+        </div>
+
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
