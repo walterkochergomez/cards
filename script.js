@@ -332,6 +332,15 @@ function showCard() {
     const done  = currentCardIndex;
     const total = currentSessionCards.length;
 
+    // --- CORRECCIÓN DEL BUG VISUAL ---
+    // 1. Quitamos la animación temporalmente y reseteamos el giro
+    flashcard.classList.add('no-transition');
+    flashcard.classList.remove('is-flipped');
+    
+    // 2. Forzamos un reflow (le dice al navegador que aplique el CSS AHORA)
+    void flashcard.offsetWidth;
+
+    // 3. Actualizamos los textos de forma oculta
     document.getElementById('cards-done').textContent = done;
     document.getElementById('cards-total').textContent = total;
     document.getElementById('progress-fill').style.width = `${(done / total) * 100}%`;
@@ -341,9 +350,11 @@ function showCard() {
     document.getElementById('card-perfekt').textContent    = card.perfekt;
     document.getElementById('card-prateritum').textContent = card.prateritum;
 
-    flashcard.classList.remove('is-flipped');
     evalButtons.classList.add('hidden');
     cardHint.style.opacity = '1';
+
+    // 4. Devolvemos la animación para que funcione normal al hacer click
+    flashcard.classList.remove('no-transition');
 }
 
 function updateNextIntervalLabel() {
@@ -411,3 +422,40 @@ function showDoneScreen() {
 loadData();
 updateHomeStats();
 showScreen(homeScreen);
+
+
+// ── 12. TEMA Y REINICIO DE DATOS ────────────────
+
+// Lógica del Tema Claro / Oscuro
+const themeToggleBtn = document.getElementById('theme-toggle');
+
+function applyTheme(theme) {
+    if(theme === 'light') {
+        document.body.classList.add('light-theme');
+    } else {
+        document.body.classList.remove('light-theme');
+    }
+    localStorage.setItem('deutschcards_theme', theme);
+}
+
+// Cargar el tema guardado al iniciar
+const savedTheme = localStorage.getItem('deutschcards_theme') || 'dark';
+applyTheme(savedTheme);
+
+themeToggleBtn.addEventListener('click', () => {
+    const isLight = document.body.classList.contains('light-theme');
+    applyTheme(isLight ? 'dark' : 'light');
+});
+
+// Lógica de reinicio de progreso
+document.getElementById('reset-progress-btn').addEventListener('click', () => {
+    const confirmReset = confirm('¿Estás seguro de que deseas reiniciar todo tu progreso? Perderás todos tus repasos y empezarás desde cero.');
+    
+    if (confirmReset) {
+        userData = {};
+        saveData();
+        selectedIds.clear();
+        updateHomeStats();
+        alert('Progreso reiniciado correctamente. ¡Mucho éxito en tu nuevo intento!');
+    }
+});
